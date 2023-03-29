@@ -18,7 +18,7 @@ print('Server Init OK')
 
 while True:
     connectionSocket, addr = serverSocket.accept()
-    payload = connectionSocket.recv(1024)
+    payload = connectionSocket.recv(8192)
     payload = payload.decode()
 
     print(f'Connection from {addr[0]}')
@@ -37,5 +37,6 @@ while True:
         ip_dict[addr] = timestamp = time.time()
         chat_log[timestamp] = (addr[0], payload)
         connectionSocket.send(pickle.dumps(chat_log))
+
     connectionSocket.close()
     

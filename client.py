@@ -33,7 +33,7 @@ try:
         clientSocket.connect((serverName, serverPort))
 
         clientSocket.send(msg.encode())
-        new_chat_log = pickle.loads(clientSocket.recv(1024))
+        new_chat_log = pickle.loads(clientSocket.recv(2147483647))
 
         clientSocket.close()
 
