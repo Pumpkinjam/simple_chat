@@ -23,15 +23,21 @@ else:
     print('connection error.')
     raise Exception
 
+clientSocket.close()
 
 try:
     while True:
         msg = input('\n\n>>> ')
 
+        clientSocket = socket(AF_INET, SOCK_STREAM)
+        clientSocket.connect((serverName, serverPort))
+
         clientSocket.send(msg.encode())
         new_chat_log = pickle.loads(clientSocket.recv(1024))
 
-        os.system('cls' if '\\' in os.path else 'clear')
+        clientSocket.close()
+
+        os.system('cls')# if '\\' in os.path else 'clear')
         print_log(new_chat_log)
 
 except KeyboardInterrupt:
