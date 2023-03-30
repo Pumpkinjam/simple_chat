@@ -2,6 +2,10 @@ from socket import *
 import os
 import pickle
 
+class ChatQuit(Exception):
+        def __init__(self, msg=''):
+            super().__init__(msg)
+
 
 def print_log(chat_log : dict) -> None:
     for timestamp, content in chat_log.items():
@@ -32,6 +36,9 @@ try:
         clientSocket = socket(AF_INET, SOCK_STREAM)
         clientSocket.connect((serverName, serverPort))
 
+        if msg == 'qqqq':
+            raise ChatQuit
+
         clientSocket.send(msg.encode())
         new_chat_log = pickle.loads(clientSocket.recv(2147483647))
 
@@ -41,6 +48,11 @@ try:
         print_log(new_chat_log)
 
 except KeyboardInterrupt:
+    clientSocket.send('\t\n'.encode())
+    clientSocket.close()
+    print('disconnected.')
+
+except ChatQuit:
     clientSocket.send('\t\n'.encode())
     clientSocket.close()
     print('disconnected.')
